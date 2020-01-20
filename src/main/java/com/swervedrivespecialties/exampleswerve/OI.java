@@ -9,7 +9,7 @@ public class OI {
     /*
        Add your joysticks and buttons here
      */
-    private Joystick primaryJoystick = new Joystick(0);
+    private Joystick primaryJoystick = new Joystick(2);
 
     public OI() {
         // Back button zeroes the drivetrain
