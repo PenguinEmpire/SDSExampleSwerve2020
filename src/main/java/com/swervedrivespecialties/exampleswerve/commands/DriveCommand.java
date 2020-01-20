@@ -15,19 +15,20 @@ public class DriveCommand extends Command {
     @Override
     protected void execute() {
         final double joystickDampen = 1.0;
+        final double deadband = 0.9;
 
-        double forward = -Robot.getOi().getPrimaryJoystick().getRawAxis(1);
-        forward = Utilities.deadband(forward);
+        double forward = -Robot.getOi().getJoy2().getRawAxis(1);
+        forward = Utilities.deadband(forward, deadband);
         // Square the forward stick
         forward = Math.copySign(Math.pow(forward, 2.0), forward) * joystickDampen;
 
-        double strafe = -Robot.getOi().getPrimaryJoystick().getRawAxis(0);
-        strafe = Utilities.deadband(strafe);
+        double strafe = -Robot.getOi().getJoy2().getRawAxis(0);
+        strafe = Utilities.deadband(strafe, deadband);
         // Square the strafe stick
         strafe = Math.copySign(Math.pow(strafe, 2.0), strafe) * joystickDampen;
 
-        double rotation = -Robot.getOi().getPrimaryJoystick().getRawAxis(4);
-        rotation = Utilities.deadband(rotation);
+        double rotation = Robot.getOi().getJoy1().getRawAxis(2);
+        rotation = Utilities.deadband(rotation, deadband);
         // Square the rotation stick
         rotation = Math.copySign(Math.pow(rotation, 2.0), rotation) * joystickDampen;
 
