@@ -15,7 +15,7 @@ public class DriveCommand extends Command {
     @Override
     protected void execute() {
         final double joystickDampen = 1.0;
-        final double deadband = 0.9;
+        final double deadband = 0.09;
 
         double forward = -Robot.getOi().getJoy2().getRawAxis(1);
         forward = Utilities.deadband(forward, deadband);
