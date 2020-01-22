@@ -11,12 +11,12 @@ public class OI {
      */
     private Joystick primaryJoystick = new Joystick(2);
 
-    private Joystick joy1 = new Joystick(0);
-    private Joystick joy2 = new Joystick(1);
+    private Joystick joy0 = new Joystick(0);
+    private Joystick joy1 = new Joystick(1);
 
     public OI() {
         // Back button zeroes the drivetrain
-        new JoystickButton(primaryJoystick, 7).whenPressed(
+        new JoystickButton(joy0, 4).whenPressed(
                 new InstantCommand(() -> DrivetrainSubsystem.getInstance().resetGyroscope())
         );
     }
@@ -24,10 +24,10 @@ public class OI {
     public Joystick getPrimaryJoystick() {
         return primaryJoystick;
     }
+    public Joystick getJoy0() {
+        return joy0;
+    }
     public Joystick getJoy1() {
         return joy1;
-    }
-    public Joystick getJoy2() {
-        return joy2;
     }
 }
