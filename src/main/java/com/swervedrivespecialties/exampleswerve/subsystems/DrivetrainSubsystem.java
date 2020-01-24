@@ -19,6 +19,7 @@ import org.frcteam2910.common.drivers.SwerveModule;
 import org.frcteam2910.common.math.Vector2;
 import org.frcteam2910.common.robot.drivers.Mk2SwerveModuleBuilder;
 import org.frcteam2910.common.robot.drivers.NavX;
+import org.frcteam2910.common.control.PidConstants;
 
 public class DrivetrainSubsystem extends Subsystem {
   private static final double TRACKWIDTH = 21.25; //0.5; //19.5; // in?
@@ -29,37 +30,56 @@ public class DrivetrainSubsystem extends Subsystem {
   private static final double BACK_LEFT_ANGLE_OFFSET = -Math.toRadians(268.7); // 0.); //180.5);//269.5);
   private static final double BACK_RIGHT_ANGLE_OFFSET = -Math.toRadians(243.6); //0.); //180.5);//244.1);
 
+
+  // Copied from Mk2SwerveModuleBuilder.class
+  /**
+   * The gear ratio of the angle motor that ships with the standard kit.
+   */
+  private static final double DEFAULT_ANGLE_REDUCTION = 18.0 / 1.0;
+  //  /**
+  //  * Default constants for angle pid running on-board with NEOs.
+  //  */
+  // private static final PidConstants DEFAULT_ONBOARD_NEO_ANGLE_CONSTANTS = new PidConstants(0.5, 0.0, 0.0001);
+  // /**
+  //  * Default constants for angle pid running on a Spark MAX using NEOs.
+  //  */
+  // private static final PidConstants DEFAULT_CAN_SPARK_MAX_ANGLE_CONSTANTS = new PidConstants(1.5, 0.0, 0.5);
+
+  private static final PidConstants WEAKER_ANGLE_CONSTANTS = new PidConstants(1.0, 0.0, 0.5);
+
+
+
     private static DrivetrainSubsystem instance;
 
     private final SwerveModule frontLeftModule = new Mk2SwerveModuleBuilder(
             new Vector2(TRACKWIDTH / 2.0, WHEELBASE / 2.0))
             .angleEncoder(new AnalogInput(RobotMap.DRIVETRAIN_FRONT_LEFT_ANGLE_ENCODER), FRONT_LEFT_ANGLE_OFFSET)
-            .angleMotor(new CANSparkMax(RobotMap.DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless),
-                    Mk2SwerveModuleBuilder.MotorType.NEO)
+            .angleMotor(new CANSparkMax(RobotMap.DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless), Mk2SwerveModuleBuilder.MotorType.NEO)
+            // .angleMotor(new CANSparkMax(RobotMap.DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless), WEAKER_ANGLE_CONSTANTS, DEFAULT_ANGLE_REDUCTION)
             .driveMotor(new CANSparkMax(RobotMap.DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless),
                     Mk2SwerveModuleBuilder.MotorType.NEO)
             .build();
     private final SwerveModule frontRightModule = new Mk2SwerveModuleBuilder(
             new Vector2(TRACKWIDTH / 2.0, -WHEELBASE / 2.0))
             .angleEncoder(new AnalogInput(RobotMap.DRIVETRAIN_FRONT_RIGHT_ANGLE_ENCODER), FRONT_RIGHT_ANGLE_OFFSET)
-            .angleMotor(new CANSparkMax(RobotMap.DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless),
-                    Mk2SwerveModuleBuilder.MotorType.NEO)
+            .angleMotor(new CANSparkMax(RobotMap.DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless), Mk2SwerveModuleBuilder.MotorType.NEO)
+            // .angleMotor(new CANSparkMax(RobotMap.DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless), WEAKER_ANGLE_CONSTANTS, DEFAULT_ANGLE_REDUCTION)
             .driveMotor(new CANSparkMax(RobotMap.DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless),
                     Mk2SwerveModuleBuilder.MotorType.NEO)
             .build();
     private final SwerveModule backLeftModule = new Mk2SwerveModuleBuilder(
             new Vector2(-TRACKWIDTH / 2.0, WHEELBASE / 2.0))
             .angleEncoder(new AnalogInput(RobotMap.DRIVETRAIN_BACK_LEFT_ANGLE_ENCODER), BACK_LEFT_ANGLE_OFFSET)
-            .angleMotor(new CANSparkMax(RobotMap.DRIVETRAIN_BACK_LEFT_ANGLE_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless),
-                    Mk2SwerveModuleBuilder.MotorType.NEO)
+            .angleMotor(new CANSparkMax(RobotMap.DRIVETRAIN_BACK_LEFT_ANGLE_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless), Mk2SwerveModuleBuilder.MotorType.NEO)
+            // .angleMotor(new CANSparkMax(RobotMap.DRIVETRAIN_BACK_LEFT_ANGLE_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless), WEAKER_ANGLE_CONSTANTS, DEFAULT_ANGLE_REDUCTION)
             .driveMotor(new CANSparkMax(RobotMap.DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless),
                     Mk2SwerveModuleBuilder.MotorType.NEO)
             .build();
     private final SwerveModule backRightModule = new Mk2SwerveModuleBuilder(
             new Vector2(-TRACKWIDTH / 2.0, -WHEELBASE / 2.0))
             .angleEncoder(new AnalogInput(RobotMap.DRIVETRAIN_BACK_RIGHT_ANGLE_ENCODER), BACK_RIGHT_ANGLE_OFFSET)
-            .angleMotor(new CANSparkMax(RobotMap.DRIVETRAIN_BACK_RIGHT_ANGLE_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless),
-                    Mk2SwerveModuleBuilder.MotorType.NEO)
+            .angleMotor(new CANSparkMax(RobotMap.DRIVETRAIN_BACK_RIGHT_ANGLE_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless), Mk2SwerveModuleBuilder.MotorType.NEO)
+            // .angleMotor(new CANSparkMax(RobotMap.DRIVETRAIN_BACK_RIGHT_ANGLE_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless), WEAKER_ANGLE_CONSTANTS, DEFAULT_ANGLE_REDUCTION)
             .driveMotor(new CANSparkMax(RobotMap.DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless),
                     Mk2SwerveModuleBuilder.MotorType.NEO)
             .build();
