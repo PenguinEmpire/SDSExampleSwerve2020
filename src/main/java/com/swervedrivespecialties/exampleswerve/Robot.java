@@ -23,4 +23,8 @@ public class Robot extends TimedRobot {
     public void robotPeriodic() {
         Scheduler.getInstance().run();
     }
+
+    public static double linearMap(double n, double start1, double stop1, double start2, double stop2) {
+      return (n - start1) / (stop1 - start1) * (stop2 - start2) + start2;
+    }
 }

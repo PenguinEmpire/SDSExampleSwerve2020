@@ -33,12 +33,23 @@ public class DriveCommand extends Command {
         strafe = Math.copySign(Math.pow(strafe, 2.0), strafe) * joystickDampen;
 
         double rotation = Robot.getOi().getJoy0().getRawAxis(2);
-        SmartDashboard.putNumber("joy1 axis 3 raw", rotation);
-        rotation += 0.15;
-        rotation = Utilities.deadband(rotation, turnDeadband);
+        SmartDashboard.putNumber("joy0 axis 3 raw", rotation);
+
+        if (-0.25 < rotation && rotation < -0.008) {
+          rotation = 0.0;
+        } else if (rotation < -0.25) {
+          rotation = Robot.linearMap(rotation, -1, -0.25, -1, -0.1);
+        } else if (rotation > -0.008) {
+          rotation = Robot.linearMap(rotation, 0, 1, 0.1, 1);
+        } 
+        SmartDashboard.putNumber("joy0 axis 3 mapped", rotation);
+
+        // // -0.25 to -0.008
+        // rotation += 0.15;
+        // rotation = Utilities.deadband(rotation, turnDeadband);
         // Square the rotation stick
         rotation = Math.copySign(Math.pow(rotation, 2.0), rotation) * joystickDampen;
-        SmartDashboard.putNumber("joy1 axis 3 adjusted", rotation);
+        SmartDashboard.putNumber("joy0 axis 3 adjusted", rotation);
 
         DrivetrainSubsystem.getInstance().drive(new Translation2d(forward, strafe), rotation, fieldOrient);
     }
